@@ -184,6 +184,7 @@ static s32 keyTimerCb(void *arg)
 #endif
 #else
 				light_on();
+
 #endif // USE_DISPLAY
 				//	zb_resetDevice();
 				drv_pm_sleep(PM_SLEEP_MODE_DEEPSLEEP, PM_WAKEUP_SRC_PAD | PM_WAKEUP_SRC_TIMER, 5*1000);
@@ -209,6 +210,19 @@ void task_keys(void) {
 			// event button on
 			g_sensorAppCtx.key1flag = 0;
 			g_sensorAppCtx.keyPressedTime = clock_time();
+#ifdef ZCL_ON_OFF
+        		epInfo_t dstEpInfo1;
+        		TL_SETSTRUCTCONTENT(dstEpInfo1, 0);
+        		dstEpInfo1.profileId = HA_PROFILE_ID;
+#if FIND_AND_BIND_SUPPORT
+                        dstEpInfo1.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
+#else
+        		dstEpInfo1.dstAddrMode = APS_SHORT_DSTADDR_WITHEP;
+        		dstEpInfo1.dstEp = SENSOR_DEVICE_ENDPOINT;
+        		dstEpInfo1.dstAddr.shortAddr = 0x0000;
+#endif
+        		zcl_onOff_toggleCmd(SENSOR_DEVICE_ENDPOINT, &dstEpInfo1, FALSE);
+#endif
 			app_set_thb_report();
 			if(!g_sensorAppCtx.timerKeyEvt)
 				g_sensorAppCtx.timerKeyEvt

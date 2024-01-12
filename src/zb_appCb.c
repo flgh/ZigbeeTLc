@@ -52,7 +52,7 @@
 void zbdemo_bdbInitCb(u8 status, u8 joinedNetwork);
 void zbdemo_bdbCommissioningCb(u8 status, void *arg);
 void zbdemo_bdbIdentifyCb(u8 endpoint, u16 srcAddr, u16 identifyTime);
-
+void zbdemo_bdbFindBindSuccessCb(findBindDst_t *pDstInfo);
 
 /**********************************************************************
  * LOCAL VARIABLES
@@ -62,7 +62,7 @@ bdb_appCb_t g_zbDemoBdbCb =
 	zbdemo_bdbInitCb,
 	zbdemo_bdbCommissioningCb,
 	zbdemo_bdbIdentifyCb,
-	NULL
+	zbdemo_bdbFindBindSuccessCb
 };
 
 #ifdef ZCL_OTA
@@ -86,6 +86,15 @@ s32 sensorDevice_bdbNetworkSteerStart(void *arg){
 	steerTimerEvt = NULL;
 	return -1;
 }
+#if FIND_AND_BIND_SUPPORT
+s32 sensorDevice_bdbFindAndBindStart(void *arg){
+        BDB_ATTR_GROUP_ID_SET(0x1234);//only for initiator
+        bdb_findAndBindStart(BDB_COMMISSIONING_ROLE_INITIATOR);
+
+        g_sensorAppCtx.bdbFBTimerEvt = NULL;
+        return -1;
+}
+#endif
 
 #if REJOIN_FAILURE_TIMER
 
@@ -195,6 +204,12 @@ void zbdemo_bdbCommissioningCb(u8 status, void *arg){
 #ifdef ZCL_OTA
 			ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
 #endif
+#if FIND_AND_BIND_SUPPORT
+                        //start Finding & Binding
+                        if(!g_sensorAppCtx.bdbFBTimerEvt){
+                                g_sensorAppCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(sensorDevice_bdbFindAndBindStart, NULL, 50);
+                        }
+#endif
 #if	USE_DISPLAY
 #if BOARD == BOARD_MHO_C401N
 			show_connected_symbol(true);
@@ -288,6 +303,29 @@ void zbdemo_bdbCommissioningCb(u8 status, void *arg){
 extern void sensorDevice_zclIdentifyCmdHandler(u8 endpoint, u16 srcAddr, u16 identifyTime);
 void zbdemo_bdbIdentifyCb(u8 endpoint, u16 srcAddr, u16 identifyTime){
 	sensorDevice_zclIdentifyCmdHandler(endpoint, srcAddr, identifyTime);
+}
+
+/*********************************************************************
+ * @fn      zbdemo_bdbFindBindSuccessCb
+ *
+ * @brief   application callback for finding & binding
+ *
+ * @param   pDstInfo
+ *
+ * @return  None
+ */
+void zbdemo_bdbFindBindSuccessCb(findBindDst_t *pDstInfo){
+#if FIND_AND_BIND_SUPPORT
+        epInfo_t dstEpInfo;
+        TL_SETSTRUCTCONTENT(dstEpInfo, 0);
+
+        dstEpInfo.dstAddrMode = APS_SHORT_DSTADDR_WITHEP;
+        dstEpInfo.dstAddr.shortAddr = pDstInfo->addr;
+        dstEpInfo.dstEp = pDstInfo->endpoint;
+        dstEpInfo.profileId = HA_PROFILE_ID;
+
+        zcl_identify_identifyCmd(SENSOR_DEVICE_ENDPOINT, &dstEpInfo, FALSE, 0, 0);
+#endif
 }
 
 #ifdef ZCL_OTA
