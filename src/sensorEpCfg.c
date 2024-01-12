@@ -89,7 +89,6 @@ const u16 sensorDevice_outClusterList[] =
 #ifdef ZCL_ON_OFF
 	ZCL_CLUSTER_GEN_ON_OFF,
 #endif
-
 #ifdef ZCL_OTA
     ZCL_CLUSTER_OTA,
 #endif

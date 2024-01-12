@@ -687,7 +687,6 @@ status_t sensorDevice_pollCtrlCb(zclIncomingAddrInfo_t *pAddrInfo, u8 cmdId, voi
 }
 #endif	/* ZCL_POLL_CTRL */
 
-
 #ifdef ZCL_GROUP
 /*********************************************************************
  * @fn      sensorDevice_zclAddGroupRspCmdHandler

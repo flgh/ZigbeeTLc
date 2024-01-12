@@ -120,7 +120,6 @@ extern "C" {
 #define REJOIN_FAILURE_TIMER						1
 #define ZCL_ON_OFF_SUPPORT							1
 
-
 // for consistency
 #if ZCL_RELATIVE_HUMIDITY_SUPPORT
 #define ZCL_RELATIVE_HUMIDITY
