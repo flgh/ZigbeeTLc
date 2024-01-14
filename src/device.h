@@ -23,6 +23,7 @@ typedef struct{
 #endif
 	ev_timer_event_t *timerLedEvt;
 	ev_timer_event_t *timerKeyEvt;
+	ev_timer_event_t *bdbFBTimerEvt;
 
 	u32 secTimeTik;
 	u32 keyPressedTime;

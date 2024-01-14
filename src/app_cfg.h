@@ -110,14 +110,15 @@ extern "C" {
 #define ZCL_RELATIVE_HUMIDITY_SUPPORT   			1
 #define ZCL_THERMOSTAT_UI_CFG_SUPPORT				1
 #define ZCL_POLL_CTRL_SUPPORT						1
-#define ZCL_GROUP_SUPPORT							0
+#define ZCL_GROUP_SUPPORT							1
 #define ZCL_OTA_SUPPORT								1
 #define TOUCHLINK_SUPPORT							0
-#define FIND_AND_BIND_SUPPORT						0
+#define FIND_AND_BIND_SUPPORT						1
 #if TOUCHLINK_SUPPORT
 #define ZCL_ZLL_COMMISSIONING_SUPPORT				1
 #endif
 #define REJOIN_FAILURE_TIMER						1
+#define ZCL_ON_OFF_SUPPORT							1
 
 // for consistency
 #if ZCL_RELATIVE_HUMIDITY_SUPPORT
@@ -127,6 +128,9 @@ extern "C" {
 #if ZCL_THERMOSTAT_UI_CFG_SUPPORT
 #define ZCL_THERMOSTAT_UI_CFG
 #define NV_ITEM_ZCL_THERMOSTAT_UI_CFG       (NV_ITEM_APP_GP_TRANS_TABLE + 1)    // see sdk/proj/drivers/drv_nv.h
+#endif
+#if ZCL_ON_OFF_SUPPORT
+#define ZCL_ON_OFF
 #endif
 
 #define DEFAULT_POLL_RATE					(10 * (4 * POLL_RATE_QUARTERSECONDS))
