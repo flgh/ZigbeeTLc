@@ -24,11 +24,28 @@ Stable from version 0.1.1.0, but additional tests are required
 6. Press Start Flashing. Wait for the firmware to finish.
 7. The device should now show up in your Zigbee bridge (If joining is enabled, of course). If this does not happen, reinsert the battery and/or short-circuit the RESET and GND pins on the LYWSD03MMC board, and on sensors with a button, press the button and hold it for 7..8 seconds.
 
+## Zigbee On/Off
+
+A microswitch should be soldered between GND and Reset pads at the back of the LYWSD03MMC ![img Microswitch.jpg](https://github.com/flgh/ZigbeeTLc/blob/master/3dcase/photo_2024-01-12_13-51-32.jpg)
+Other devices have not been tested.
+
+Toggle command is sent to the coordinator if firmware is compiled without groups and bind support.
+
+Toggle command is sent to the bound device if [firmware](https://github.com/flgh/ZigbeeTLc/raw/master/bin/1141-020a-01183001-Z03MMC.zigbee) is compiled with binding and group and the on/off cluster is bound to another Zigbee device, it's also sent to the coordinator.
+
+### 3d printed case
+
+[LYWS_switch_module.stl](https://github.com/flgh/ZigbeeTLc/blob/master/3dcase/LYWS_switch_module.stl) and [LYWS_switch_mount.stl](https://github.com/flgh/ZigbeeTLc/blob/master/3dcase/LYWS_switch_mount.stl) case are suitable for an Omron B3F-6000 switch and wall mount.
+
+### Zigbee2MQTT
+
+An [external converter](https://github.com/flgh/ZigbeeTLc/blob/master/zigbee2mqtt/ext_converter.js) should be used, the included custom device definition of Zigbee2MQTT >= 1.33.2 doesn't support OnOff functionnality.
+
 ## Action of the button
 
 Action of the button (or contact "reset" to "gnd" for LYWSD03MMC):
 
-* Short press - send temperature, humidity and battery data.
+* Short press - send Zigbee On/Off toggle command + temperature, humidity and battery data.
 * Hold for 2 seconds - Switches temperature between Celsius and Fahrenheit. The change will immediately appear on the screen.
 * Hold for 7 seconds - reset the binding and restart. The screen will briefly display “---” (for devices using a screen with fast refresh capabilities, not E-Ink). After restarting, the thermometer will wait forever for registration. Jerking the battery won't change anything.
 
@@ -124,6 +141,8 @@ The flashing "BT" icon is called by the "identify" command.
 16. Ver 0.1.1.9: Fix configuration saving error
 
 17. Ver 0.1.2.0: At the [request](https://github.com/pvvx/ZigbeeTLc/pull/50#issuecomment-1925906616) of @devbis, for differences in z2m, the device names have been renamed. "-z" will be added to the name Zigbee devices, "-bz" will be added to the [BLE and Zigbee](https://github.com/pvvx/BZdevice) devices, "-zb" to the [Zigbee2BLE](https://github.com/pvvx/Zigbee2BLE) devices.
+
+18. Reenable "Groups" and "Find and Bind" to support On/Off cluster binding.
 
 ## Make
 
