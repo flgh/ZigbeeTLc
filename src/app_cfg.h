@@ -110,7 +110,7 @@ extern "C" {
 #define ZCL_RELATIVE_HUMIDITY_SUPPORT   			1
 #define ZCL_THERMOSTAT_UI_CFG_SUPPORT				1
 #define ZCL_POLL_CTRL_SUPPORT						1
-#define ZCL_GROUP_SUPPORT							1
+#define ZCL_GROUP_SUPPORT							0
 #define ZCL_OTA_SUPPORT								1
 #define TOUCHLINK_SUPPORT							0
 #define FIND_AND_BIND_SUPPORT						1
