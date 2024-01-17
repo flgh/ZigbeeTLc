@@ -88,7 +88,9 @@ s32 sensorDevice_bdbNetworkSteerStart(void *arg){
 }
 #if FIND_AND_BIND_SUPPORT
 s32 sensorDevice_bdbFindAndBindStart(void *arg){
+#ifdef ZCL_GROUP_SUPPORT
         BDB_ATTR_GROUP_ID_SET(0x1234);//only for initiator
+#endif
         bdb_findAndBindStart(BDB_COMMISSIONING_ROLE_INITIATOR);
 
         g_sensorAppCtx.bdbFBTimerEvt = NULL;
