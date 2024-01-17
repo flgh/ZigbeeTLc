@@ -417,11 +417,7 @@ B2.0 | 0x3C         | 0x44   (SHT4x)  | Test   original string HW
  *
  * @return  None
  */
-#ifdef ZCL_ON_OFF
-u16 reportableChange[5];
-#else
 u16 reportableChange[4];
-#endif
 
 void user_init(bool isRetention)
 {
@@ -508,18 +504,6 @@ void user_init(bool isRetention)
 			180,
 			(u8 *)&reportableChange[3]
 		);
-#ifdef ZCL_ON_OFF
-	reportableChange[4] = 0;
-    		bdb_defaultReportingCfg(
-        		SENSOR_DEVICE_ENDPOINT,
-        		HA_PROFILE_ID,
-        		ZCL_CLUSTER_GEN_ON_OFF,
-        		ZCL_ATTRID_ONOFF,
-        		0,
-        		60,
-        		(u8 *)&reportableChange[4]
-        );
-#endif
 		/* Initialize BDB */
 		u8 repower = drv_pm_deepSleep_flag_get() ? 0 : 1;
 		bdb_init((af_simple_descriptor_t *)&sensorDevice_simpleDesc, &g_bdbCommissionSetting, &g_zbDemoBdbCb, repower);
