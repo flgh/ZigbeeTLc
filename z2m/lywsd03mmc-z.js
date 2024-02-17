@@ -15,6 +15,10 @@ const {
 } = require('zigbee-herdsman-converters/lib/modernExtend');
 const reporting = require('zigbee-herdsman-converters/lib/reporting');
 const ota = require('zigbee-herdsman-converters/lib/ota');
+const exposes = require('zigbee-herdsman-converters/lib/exposes');
+const e = exposes.presets;
+const fz = require('zigbee-herdsman-converters/converters/fromZigbee');
+
 
 const dataType = {
     boolean: 0x10,
@@ -29,7 +33,7 @@ const definition = {
     zigbeeModel: ['LYWSD03MMC-z'],
     model: 'LYWSD03MMC',
     vendor: 'Xiaomi',
-    description: 'Temperature & humidity sensor with custom firmware',
+    description: 'Temperature, humidity & switch sensor with custom firmware',
     extend: [
         quirkAddEndpointCluster({
             endpointID: 1,
@@ -39,6 +43,7 @@ const definition = {
                 'msTemperatureMeasurement',
                 'msRelativeHumidity',
                 'hvacUserInterfaceCfg',
+		'genOnOff',
             ],
         }),
         batteryPercentage(),
@@ -119,9 +124,11 @@ const definition = {
         }),
     ],
     ota: ota.zigbeeOTA,
+    fromZigbee: [fz.command_toggle],
+
     configure: async (device, coordinatorEndpoint, logger) => {
         const endpoint = device.getEndpoint(1);
-        const bindClusters = ['msTemperatureMeasurement', 'msRelativeHumidity', 'genPowerCfg'];
+        const bindClusters = ['msTemperatureMeasurement', 'msRelativeHumidity', 'genPowerCfg', 'genOnOff'];
         await reporting.bind(endpoint, coordinatorEndpoint, bindClusters);
         await reporting.temperature(endpoint, {min: 10, max: 300, change: 10});
         await reporting.humidity(endpoint, {min: 10, max: 300, change: 50});
@@ -134,6 +141,7 @@ const definition = {
             /* backward compatibility */
         }
     },
+    exposes: [e.action(['toggle'])],
 };
 
 module.exports = definition;
