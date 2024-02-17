@@ -19,7 +19,6 @@ const exposes = require('zigbee-herdsman-converters/lib/exposes');
 const e = exposes.presets;
 const fz = require('zigbee-herdsman-converters/converters/fromZigbee');
 
-
 const dataType = {
     boolean: 0x10,
     uint8: 0x20,
@@ -125,7 +124,6 @@ const definition = {
     ],
     ota: ota.zigbeeOTA,
     fromZigbee: [fz.command_toggle],
-
     configure: async (device, coordinatorEndpoint, logger) => {
         const endpoint = device.getEndpoint(1);
         const bindClusters = ['msTemperatureMeasurement', 'msRelativeHumidity', 'genPowerCfg', 'genOnOff'];
