@@ -29,9 +29,10 @@ Stable from version 0.1.1.0, but additional tests are required
 A microswitch should be soldered between GND and Reset pads at the back of the LYWSD03MMC ![img Microswitch.jpg](https://github.com/flgh/ZigbeeTLc/blob/master/3dcase/photo_2024-01-12_13-51-32.jpg)
 Other devices have not been tested.
 
-Toggle command is sent to the coordinator if firmware is compiled without groups and bind support.
+Toggle command is sent to the coordinator if firmware is compiled without bind support.
+Toggle command is sent to the bound device if [firmware](https://github.com/flgh/ZigbeeTLc/raw/master/bin/1141-020a-01203001-Z03MMC.zigbee) is compiled with binding and the on/off cluster is bound to another Zigbee device, it's also sent to the coordinator.
 
-Toggle command is sent to the bound device if [firmware](https://github.com/flgh/ZigbeeTLc/raw/master/bin/1141-020a-01203001-Z03MMC.zigbee) is compiled with binding and group and the on/off cluster is bound to another Zigbee device, it's also sent to the coordinator.
+In ZHA, the LYWSD03MMC should be bound to the coordinator (it will report as opening by default) or another Zigbee device.
 
 ### 3d printed case
 
@@ -39,7 +40,7 @@ Toggle command is sent to the bound device if [firmware](https://github.com/flgh
 
 ### Zigbee2MQTT
 
-An [external converter](https://github.com/flgh/ZigbeeTLc/blob/master/zigbee2mqtt/ext_converter.js) should be used, the included custom device definition of Zigbee2MQTT >= 1.33.2 doesn't support OnOff functionnality.
+An [external converter](https://github.com/flgh/ZigbeeTLc/blob/master/z2m/lywsd03mmc-z.js) should be used, the included custom device definition of Zigbee2MQTT >= 1.33.2 doesn't support OnOff toggleCommand functionnality.
 
 ## Action of the button
 
@@ -142,7 +143,7 @@ The flashing "BT" icon is called by the "identify" command.
 
 17. Ver 0.1.2.0: At the [request](https://github.com/pvvx/ZigbeeTLc/pull/50#issuecomment-1925906616) of @devbis, for differences in z2m, the device names have been renamed. "-z" will be added to the name Zigbee devices, "-bz" will be added to the [BLE and Zigbee](https://github.com/pvvx/BZdevice) devices, "-zb" to the [Zigbee2BLE](https://github.com/pvvx/Zigbee2BLE) devices.
 
-18. Reenable "Groups" and "Find and Bind" to support On/Off cluster binding.
+18. Reenable "Find and Bind" to support On/Off cluster binding.
 
 ## Make
 
