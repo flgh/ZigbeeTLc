@@ -31,7 +31,7 @@ Other devices have not been tested.
 
 Toggle command is sent to the coordinator if firmware is compiled without groups and bind support.
 
-Toggle command is sent to the bound device if [firmware](https://github.com/flgh/ZigbeeTLc/raw/master/bin/1141-020a-01183001-Z03MMC.zigbee) is compiled with binding and group and the on/off cluster is bound to another Zigbee device, it's also sent to the coordinator.
+Toggle command is sent to the bound device if [firmware](https://github.com/flgh/ZigbeeTLc/raw/master/bin/1141-020a-01203001-Z03MMC.zigbee) is compiled with binding and group and the on/off cluster is bound to another Zigbee device, it's also sent to the coordinator.
 
 ### 3d printed case
 
