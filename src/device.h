@@ -7,6 +7,7 @@
  * CONSTANT
  */
 #define SENSOR_DEVICE_ENDPOINT  0x01
+#define SWITCH_DEVICE_ENDPOINT  0x02
 
 /**********************************************************************
  * TYPEDEFS
@@ -146,6 +147,7 @@ extern bdb_commissionSetting_t g_bdbCommissionSetting;
 extern u8 SENSOR_DEVICE_CB_CLUSTER_NUM;
 extern const zcl_specClusterInfo_t g_sensorDeviceClusterList[];
 extern const af_simple_descriptor_t sensorDevice_simpleDesc;
+extern const af_simple_descriptor_t switchDevice_simpleDesc;
 
 /* Attributes */
 extern zcl_basicAttr_t g_zcl_basicAttrs;
