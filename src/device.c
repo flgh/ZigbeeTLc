@@ -214,6 +214,7 @@ void user_app_init(void)
 
 	/* Register endPoint */
 	af_endpointRegister(SENSOR_DEVICE_ENDPOINT, (af_simple_descriptor_t *)&sensorDevice_simpleDesc, zcl_rx_handler, NULL);
+	af_endpointRegister(SWITCH_DEVICE_ENDPOINT, (af_simple_descriptor_t *)&switchDevice_simpleDesc, zcl_rx_handler, NULL);
 #if ZCL_THERMOSTAT_UI_CFG_SUPPORT
 	zcl_thermostatConfig_restore();
 #endif

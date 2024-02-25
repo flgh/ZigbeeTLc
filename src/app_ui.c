@@ -217,10 +217,10 @@ void task_keys(void) {
                         dstEpInfo1.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
 #else
         		dstEpInfo1.dstAddrMode = APS_SHORT_DSTADDR_WITHEP;
-        		dstEpInfo1.dstEp = SENSOR_DEVICE_ENDPOINT;
+        		dstEpInfo1.dstEp = SWITCH_DEVICE_ENDPOINT;
         		dstEpInfo1.dstAddr.shortAddr = 0x0000;
 #endif
-        		zcl_onOff_toggleCmd(SENSOR_DEVICE_ENDPOINT, &dstEpInfo1, FALSE);
+        		zcl_onOff_toggleCmd(SWITCH_DEVICE_ENDPOINT, &dstEpInfo1, FALSE);
 #endif
 			app_set_thb_report();
 			if(!g_sensorAppCtx.timerKeyEvt)

@@ -78,6 +78,11 @@ const u16 sensorDevice_inClusterList[] =
 #endif
 };
 
+const u16 switchDevice_inClusterList[] =
+{
+
+};
+
 /**
  *  @brief Definition for Outgoing cluster / Client Cluster
  */
@@ -97,11 +102,21 @@ const u16 sensorDevice_outClusterList[] =
 #endif
 };
 
+const u16 switchDevice_outClusterList[] =
+{
+#ifdef ZCL_ON_OFF
+	ZCL_CLUSTER_GEN_ON_OFF,
+#endif
+
+};
+
 /**
  *  @brief Definition for Server cluster number and Client cluster number
  */
 #define sensorDevice_IN_CLUSTER_NUM		(sizeof(sensorDevice_inClusterList)/sizeof(sensorDevice_inClusterList[0]))
 #define sensorDevice_OUT_CLUSTER_NUM	(sizeof(sensorDevice_outClusterList)/sizeof(sensorDevice_outClusterList[0]))
+#define switchDevice_IN_CLUSTER_NUM		(sizeof(switchDevice_inClusterList)/sizeof(switchDevice_inClusterList[0]))
+#define switchDevice_OUT_CLUSTER_NUM	(sizeof(switchDevice_outClusterList)/sizeof(switchDevice_outClusterList[0]))
 
 /**
  *  @brief Definition for simple description for HA profile
@@ -117,6 +132,19 @@ const af_simple_descriptor_t sensorDevice_simpleDesc =
 	sensorDevice_OUT_CLUSTER_NUM,          	/* Application output cluster count */
 	(u16 *)sensorDevice_inClusterList,    	/* Application input cluster list */
 	(u16 *)sensorDevice_outClusterList,   	/* Application output cluster list */
+};
+
+const af_simple_descriptor_t switchDevice_simpleDesc =
+{
+	HA_PROFILE_ID,                      	/* Application profile identifier */
+	HA_DEV_ONOFF_SWITCH,              /* Application device identifier */
+	SWITCH_DEVICE_ENDPOINT,         		/* Endpoint */
+	1,										/* Application device version */
+	0,										/* Reserved */
+	switchDevice_IN_CLUSTER_NUM,           	/* Application input cluster count */
+	switchDevice_OUT_CLUSTER_NUM,          	/* Application output cluster count */
+	(u16 *)switchDevice_inClusterList,    	/* Application input cluster list */
+	(u16 *)switchDevice_outClusterList,   	/* Application output cluster list */
 };
 
 /* Basic */
