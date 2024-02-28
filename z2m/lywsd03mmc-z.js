@@ -33,6 +33,7 @@ const definition = {
     model: 'LYWSD03MMC',
     vendor: 'Xiaomi',
     description: 'Temperature, humidity & switch sensor with custom firmware',
+    endpoint: (device) => { return {'sensor': 0x01, 'switch': 0x02, }},
     extend: [
         quirkAddEndpointCluster({
             endpointID: 1,
@@ -42,8 +43,12 @@ const definition = {
                 'msTemperatureMeasurement',
                 'msRelativeHumidity',
                 'hvacUserInterfaceCfg',
-		'genOnOff',
             ],
+        }),
+        quirkAddEndpointCluster({
+            endpointID: 2,
+            outputClusters: ['genOnOff'],
+            inputClusters: [],
         }),
         batteryPercentage(),
         temperature({reporting: {min: 10, max: 300, change: 10}}),
@@ -123,22 +128,26 @@ const definition = {
         }),
     ],
     ota: ota.zigbeeOTA,
-    fromZigbee: [fz.command_toggle],
+    meta: {multiEndpoint: true},
     configure: async (device, coordinatorEndpoint, logger) => {
-        const endpoint = device.getEndpoint(1);
-        const bindClusters = ['msTemperatureMeasurement', 'msRelativeHumidity', 'genPowerCfg', 'genOnOff'];
-        await reporting.bind(endpoint, coordinatorEndpoint, bindClusters);
-        await reporting.temperature(endpoint, {min: 10, max: 300, change: 10});
-        await reporting.humidity(endpoint, {min: 10, max: 300, change: 50});
-        await reporting.batteryPercentageRemaining(endpoint);
+        const endpoint1 = device.getEndpoint(1);
+	const endpoint2 = device.getEndpoint(2);
+        const bindClusters1 = ['msTemperatureMeasurement', 'msRelativeHumidity', 'genPowerCfg'];
+        const bindClusters2 = ['genOnOff'];
+        await reporting.bind(endpoint1, coordinatorEndpoint, bindClusters1);
+	await reporting.bind(endpoint2, coordinatorEndpoint, bindClusters2);
+        await reporting.temperature(endpoint1, {min: 10, max: 300, change: 10});
+        await reporting.humidity(endpoint1, {min: 10, max: 300, change: 50});
+        await reporting.batteryPercentageRemaining(endpoint1);
         try {
-            await endpoint.read('hvacThermostat', [0x0010, 0x0011, 0x0102, 0x0103, 0x0104, 0x0105]);
-            await endpoint.read('msTemperatureMeasurement', [0x0010]);
-            await endpoint.read('msRelativeHumidity', [0x0010]);
+            await endpoint1.read('hvacThermostat', [0x0010, 0x0011, 0x0102, 0x0103, 0x0104, 0x0105]);
+            await endpoint1.read('msTemperatureMeasurement', [0x0010]);
+            await endpoint1.read('msRelativeHumidity', [0x0010]);
         } catch (e) {
             /* backward compatibility */
         }
     },
+    fromZigbee: [fz.command_toggle],
     exposes: [e.action(['toggle'])],
 };
 
